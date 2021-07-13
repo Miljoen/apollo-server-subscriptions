@@ -1,9 +1,9 @@
 {
   "name": "server-subscriptions-as3",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "nodemon src/index.ts"
   },
   "license": "MIT",
   "dependencies": {
@@ -14,5 +14,11 @@
     "graphql-subscriptions": "^1.2.1",
     "nodemon": "^2.0.7",
     "subscriptions-transport-ws": "^0.9.19"
+  },
+  "devDependencies": {
+    "@types/node": "^16.3.1",
+    "ts-node": "^10.1.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.3.5"
   }
 }
