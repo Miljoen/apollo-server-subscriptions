@@ -1,7 +1,7 @@
 {
   "name": "server-subscriptions-as3",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "nodemon src/index.js"
   },
