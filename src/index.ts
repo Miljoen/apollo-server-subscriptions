@@ -2,10 +2,11 @@
 const { createServer } = require("http");
 const express = require("express");
 const { execute, subscribe } = require("graphql");
-const { ApolloServer, gql } = require("apollo-server-express");
+const { ApolloServer } = require("apollo-server-express");
 const { PubSub } = require("graphql-subscriptions");
 const { SubscriptionServer } = require("subscriptions-transport-ws");
 const { makeExecutableSchema } = require("@graphql-tools/schema");
+import { typeDefs } from "./graphql/schema";
 
 (async () => {
     const PORT = 4000;
@@ -14,15 +15,6 @@ const { makeExecutableSchema } = require("@graphql-tools/schema");
     const httpServer = createServer(app);
 
     // Schema definition
-    const typeDefs = gql`
-        type Query {
-            currentNumber: Int
-        }
-
-        type Subscription {
-            numberIncremented: Int
-        }
-    `;
 
     // Resolver map
     const resolvers = {
