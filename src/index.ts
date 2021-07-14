@@ -14,8 +14,6 @@ import { typeDefs } from "./graphql/schema";
     const app = express();
     const httpServer = createServer(app);
 
-    // Schema definition
-
     // Resolver map
     const resolvers = {
         Query: {
