@@ -1,24 +1,28 @@
+import {createUser, getUsers, initialiseDatabase} from "../utils";
+
 const { PubSub } = require("graphql-subscriptions");
 const pubsub = new PubSub();
 
 export const resolvers = {
     Query: {
-        currentNumber() {
-            return currentNumber;
+        users () {
+            return getUsers();
         },
     },
     Subscription: {
-        numberIncremented: {
-            subscribe: () => pubsub.asyncIterator(["NUMBER_INCREMENTED"]),
+        userCreated: {
+            subscribe: () => pubsub.asyncIterator(["USER_CREATED"]),
         },
     },
 };
 
-let currentNumber = 0;
-function incrementNumber() {
-    currentNumber++;
-    pubsub.publish("NUMBER_INCREMENTED", { numberIncremented: currentNumber });
-    setTimeout(incrementNumber, 1000);
+let id = 0;
+export const incrementCreateUser = async () => {
+    createUser(id, 'Yoeri', 'yoeri@test.com', 'password').then((userArray: Array<object>) => {
+        pubsub.publish("USER_CREATED", { userCreated: userArray[0] });
+    });
+
+    id++;
+
+    setTimeout(incrementCreateUser, 1000);
 }
-// Start incrementing
-incrementNumber();
