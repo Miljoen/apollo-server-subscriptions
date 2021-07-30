@@ -1,9 +1,7 @@
-import {client, pool} from "../database/db";
+import {pool} from "../database/db";
 import {PoolClient, QueryConfig, QueryResult} from "pg";
 
-client.connect();
-
-export const createUsersTable = async () => {
+export const createUsersTable = () => {
     const query = `
         CREATE TABLE users
         (
@@ -17,7 +15,7 @@ export const createUsersTable = async () => {
     return executeQuery(query);
 }
 
-export const listTables = async () => {
+export const listTables = () => {
     const query = `
         SELECT table_name
         FROM information_schema.tables
@@ -28,7 +26,7 @@ export const listTables = async () => {
     return executeQuery(query);
 }
 
-export const createUser = async (
+export const createUser = (
     id: number,
     name: string,
     email: string,
@@ -42,7 +40,7 @@ export const createUser = async (
     return executeQuery(query);
 }
 
-export const getUsers = async () => {
+export const getUsers = () => {
     const query = `
         SELECT *
         FROM users;
@@ -51,28 +49,17 @@ export const getUsers = async () => {
     return executeQuery(query);
 }
 
-export const initialiseDatabase = async () => {
-    return listTables().then((tables: Array<object>) => {
-        if (tables.length === 0) {
-            createUsersTable();
-            return;
-        }
-
-        const doesUsersTableExist = tables.some((table: object) => Object.values(table).some((name: string) => name === 'users'));
-        if (!doesUsersTableExist) {
-            createUsersTable();
-        }
-    });
+export async function initialiseDatabase(): Promise<void> {
+    const tables: Array<object> = await listTables();
+    const doesUsersTableExist = tables.some((table: object) => Object.values(table).some((name: string) => name === 'users'));
+    if (! doesUsersTableExist) {
+        await createUsersTable();
+    }
 }
 
-function executeQuery(query: QueryConfig|string): Promise<Array<object>> {
-    return pool.connect()
-        .then((client: PoolClient) => {
-            const result = client.query(query);
-            client.release();
-            return result;
-        })
-        .then((result: QueryResult) => {
-            return result.rows;
-        });
+async function executeQuery(query: QueryConfig|string): Promise<Array<object>> {
+    const client: PoolClient = await pool.connect()
+    const result: QueryResult = await client.query(query);
+    client.release();
+    return result.rows;
 }

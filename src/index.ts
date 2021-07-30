@@ -10,20 +10,18 @@ const {SubscriptionServer} = require("subscriptions-transport-ws");
 const {makeExecutableSchema} = require("@graphql-tools/schema");
 
 (async () => {
-    await initialiseDatabase().then(() => {
-        incrementCreateUser();
-    });
+    await initialiseDatabase();
+    await incrementCreateUser();
 
     const PORT = 4000;
     const app = express();
     const httpServer = createServer(app);
 
-    const schema = makeExecutableSchema({typeDefs, resolvers});
+    const schema = makeExecutableSchema({ typeDefs, resolvers });
+    const server = new ApolloServer({ schema });
 
-    const server = new ApolloServer({
-        schema,
-    });
     await server.start();
+
     server.applyMiddleware({app});
 
     SubscriptionServer.create(
