@@ -1,0 +1,6 @@
+{
+  "root": true,
+  "extends": [
+    "@pxlwidgets/eslint-config"
+  ]
+}
