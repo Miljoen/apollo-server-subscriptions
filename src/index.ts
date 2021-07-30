@@ -1,40 +1,40 @@
-import {typeDefs} from "./graphql/schema";
-import {incrementCreateUser, resolvers} from "./graphql/resolvers";
-import {initialiseDatabase} from "./utils";
+import { typeDefs } from './graphql/schema'
+import { incrementCreateUser, resolvers } from './graphql/resolvers'
+import { initialiseDatabase } from './utils'
 
-const {createServer} = require("http");
-const express = require("express");
-const {execute, subscribe} = require("graphql");
-const {ApolloServer} = require("apollo-server-express");
-const {SubscriptionServer} = require("subscriptions-transport-ws");
-const {makeExecutableSchema} = require("@graphql-tools/schema");
+const { createServer } = require('http')
+const express = require('express')
+const { execute, subscribe } = require('graphql')
+const { ApolloServer } = require('apollo-server-express')
+const { SubscriptionServer } = require('subscriptions-transport-ws')
+const { makeExecutableSchema } = require('@graphql-tools/schema');
 
 (async () => {
-    await initialiseDatabase();
-    await incrementCreateUser();
+    await initialiseDatabase()
+    await incrementCreateUser()
 
-    const PORT = 4000;
-    const app = express();
-    const httpServer = createServer(app);
+    const PORT = 4000
+    const app = express()
+    const httpServer = createServer(app)
 
-    const schema = makeExecutableSchema({ typeDefs, resolvers });
-    const server = new ApolloServer({ schema });
+    const schema = makeExecutableSchema({ typeDefs, resolvers })
+    const server = new ApolloServer({ schema })
 
-    await server.start();
+    await server.start()
 
-    server.applyMiddleware({app});
+    server.applyMiddleware({ app })
 
     SubscriptionServer.create(
-        {schema, execute, subscribe},
-        {server: httpServer, path: server.graphqlPath}
-    );
+        { schema, execute, subscribe },
+        { server: httpServer, path: server.graphqlPath },
+    )
 
     httpServer.listen(PORT, () => {
         console.log(
-            `🚀 Query endpoint ready at http://localhost:${PORT}${server.graphqlPath}`
-        );
+            `🚀 Query endpoint ready at http://localhost:${PORT}${server.graphqlPath}`,
+        )
         console.log(
-            `🚀 Subscription endpoint ready at ws://localhost:${PORT}${server.graphqlPath}`
-        );
-    });
-})();
+            `🚀 Subscription endpoint ready at ws://localhost:${PORT}${server.graphqlPath}`,
+        )
+    })
+})()

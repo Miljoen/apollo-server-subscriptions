@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server-express");
+const { gql } = require('apollo-server-express')
 
 export const typeDefs = gql`
     type Query {
@@ -15,4 +15,4 @@ export const typeDefs = gql`
         email: String!
         password: String!
     }
-`;
+`

@@ -1,6 +1,23 @@
 {
   "root": true,
+  "ignorePatterns": ["*.js"],
   "extends": [
     "@pxlwidgets/eslint-config"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json"
+        ],
+        "createDefaultProgram": true
+      },
+      "rules": {
+        "@typescript-eslint/semi": ["error", "never"]
+      }
+    }
   ]
 }
