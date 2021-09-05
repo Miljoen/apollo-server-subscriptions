@@ -17,6 +17,7 @@
     "graphql-subscriptions": "^1.2.1",
     "nodemon": "^2.0.7",
     "pg": "^8.6.0",
+    "sequelize": "^6.6.5",
     "subscriptions-transport-ws": "^0.9.19"
   },
   "devDependencies": {

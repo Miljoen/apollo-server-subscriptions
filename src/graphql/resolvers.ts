@@ -28,5 +28,5 @@ export const incrementCreateUser = async () => {
         pubsub.publish('USER_CREATED', { userCreated: userArray[0] })
     })
 
-    setTimeout(incrementCreateUser, 1000)
+    setTimeout(incrementCreateUser, 10)
 }

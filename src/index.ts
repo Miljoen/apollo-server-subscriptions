@@ -1,6 +1,5 @@
 import { typeDefs } from './graphql/schema'
-import { incrementCreateUser, resolvers } from './graphql/resolvers'
-import { initialiseDatabase } from './utils'
+import { resolvers } from './graphql/resolvers'
 
 const { createServer } = require('http')
 const express = require('express')
@@ -10,8 +9,9 @@ const { SubscriptionServer } = require('subscriptions-transport-ws')
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 
 (async () => {
-    await initialiseDatabase()
-    await incrementCreateUser()
+    // await dropUsersTable()
+    // await initialiseDatabase()
+    // await incrementCreateUser()
 
     const PORT = 4000
     const app = express()

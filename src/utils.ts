@@ -1,18 +1,13 @@
 import { PoolClient, QueryConfig, QueryResult } from 'pg'
 import { pool } from '../database/db'
+import { DataTypes } from "sequelize";
+import { sequelize, User } from "../database/sequelize";
 
 export const createUsersTable = () => {
-    const query = `
-        CREATE TABLE users
-        (
-            id       int primary key,
-            name     varchar,
-            email    varchar,
-            password varchar
-        );
-    `
-
-    return executeQuery(query)
+    User.init({
+        name: DataTypes.STRING,
+        email: DataTypes.STRING,
+    }, { sequelize, modelName: 'user' })
 }
 
 export const listTables = () => {
@@ -49,16 +44,22 @@ export const createUser = (
 }
 
 export const getUsers = () => {
-    const query = `
-        SELECT *
-        FROM users;
-    `
+    User.init({
+        name: DataTypes.STRING,
+        email: DataTypes.STRING,
+    }, { sequelize, modelName: 'user' })
 
-    return executeQuery(query)
+    sequelize.sync()
+
+    User.create({
+        name: 'janedoe',
+        email: 'jane@doe.com',
+    })
+
+    return User.findAll()
 }
 
 export async function initialiseDatabase(): Promise<void> {
-    await dropUsersTable()
     const tables: Array<object> = await listTables()
     const doesUsersTableExist = tables.some((table: object) => (
         Object.values(table).some((name: string) => name === 'users')
