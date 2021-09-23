@@ -1,8 +1,8 @@
-import { createUser, getUsers } from '../utils'
+import { User } from '../../database/sequelize'
 
 const { PubSub } = require('graphql-subscriptions')
 
-const pubsub = new PubSub()
+const pubSub = new PubSub()
 
 export const resolvers = {
     Query: {
@@ -12,7 +12,7 @@ export const resolvers = {
     },
     Subscription: {
         userCreated: {
-            subscribe: () => pubsub.asyncIterator(['USER_CREATED']),
+            subscribe: () => pubSub.asyncIterator(['USER_CREATED']),
         },
     },
 }
@@ -24,9 +24,26 @@ const idGenerator = (function* getIdGenerator() {
 
 export const incrementCreateUser = async () => {
     const id = idGenerator.next().value
-    createUser(id, 'Yoeri', 'yoeri@test.com', 'password').then((userArray: Array<object>) => {
-        pubsub.publish('USER_CREATED', { userCreated: userArray[0] })
+
+    pubSub.publish('USER_CREATED', {
+        userCreated: await User.create({
+            id,
+            name: 'Yoeri',
+            email: 'yoeri@test.com',
+            password: 'password',
+        }, {
+            fields: [
+                'id',
+                'name',
+                'email',
+                'password',
+            ],
+        }),
     })
 
-    setTimeout(incrementCreateUser, 10)
+    setTimeout(incrementCreateUser, 1000)
+}
+
+function getUsers() {
+    return User.findAll()
 }

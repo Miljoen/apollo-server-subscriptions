@@ -1,5 +1,6 @@
 import { typeDefs } from './graphql/schema'
-import { resolvers } from './graphql/resolvers'
+import { incrementCreateUser, resolvers } from './graphql/resolvers'
+import { User } from '../database/sequelize'
 
 const { createServer } = require('http')
 const express = require('express')
@@ -9,10 +10,6 @@ const { SubscriptionServer } = require('subscriptions-transport-ws')
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 
 (async () => {
-    // await dropUsersTable()
-    // await initialiseDatabase()
-    // await incrementCreateUser()
-
     const PORT = 4000
     const app = express()
     const httpServer = createServer(app)
@@ -37,4 +34,8 @@ const { makeExecutableSchema } = require('@graphql-tools/schema');
             `🚀 Subscription endpoint ready at ws://localhost:${PORT}${server.graphqlPath}`,
         )
     })
+
+    await User.drop()
+    await User.sync()
+    await incrementCreateUser()
 })()
