@@ -1,4 +1,4 @@
-import { User } from '../../database/sequelize'
+import { User } from '../../models/User'
 
 const { PubSub } = require('graphql-subscriptions')
 
