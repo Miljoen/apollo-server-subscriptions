@@ -1,6 +1,7 @@
 import { initialiseDatabase } from '../database/setup/initialise-database'
 import { typeDefs } from './graphql/schema'
-import { incrementCreateUser, resolvers } from './graphql/resolvers'
+import { resolvers } from './graphql/resolvers'
+import { incrementCreateUser } from './graphql/subscriptions/user-created'
 
 const { createServer } = require('http')
 const express = require('express')

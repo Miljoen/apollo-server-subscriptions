@@ -1,4 +1,4 @@
-import { User } from '../../models/User'
+import { User } from '../../src/models/User'
 
 export const defineModels = async () => {
     await User
