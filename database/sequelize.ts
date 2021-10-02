@@ -1,3 +1,8 @@
 import { Sequelize } from 'sequelize'
+import * as dotenv from "dotenv";
 
-export const sequelize = new Sequelize('postgres://yoeritosh:@127.0.0.1:5432/apollo-server-subscriptions')
+dotenv.config()
+
+export const sequelize = new Sequelize(
+    `postgres://${ process.env.DB_USER }:${ process.env.DB_PASSWORD }@${ process.env.DB_HOST }:${ process.env.DB_PORT }/${ process.env.DB_NAME }`
+)
